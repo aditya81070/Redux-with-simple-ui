@@ -1,5 +1,5 @@
 // Library Code
-function createStore(reducer) {
+function createStore (reducer) {
   // The store should have four parts:
   // 1. The State
   // 2. Get the state
@@ -31,16 +31,44 @@ function createStore(reducer) {
 
 // App Code
 function todods (state = [], action) {
-  if (action.type === 'ADD_TODO') {
-    return state.concat([action.todo])
+  switch (action.todo) {
+    case 'ADD_TODO':
+      return state.concat([action.todo])
+
+    case 'REMOVE_TODO':
+      return state.filter((todo) => todo.id !== action.todo.id)
+
+    case 'TOGGLE_TODO':
+      return state.map((todo) => todo.id !== action.todo.id ? todo
+        : Object.assign({}, todo, { complete: !todo.complete }))
+
+    default:
+      return state
   }
-  return state
+}
+function goals (state = [], action) {
+  switch (action.todo) {
+    case 'ADD_GOAL':
+      return state.concat([action.goal])
+
+    case 'REMOVE_GOAL':
+      return state.filter((goal) => goal.id !== action.goal.id)
+
+    default:
+      return state
+  }
 }
 
 const store = createStore(todods)
 store.subscribe(() => {
   console.log('The new state is', store.getState())
 })
-store.subscribe(() => {
-  console.log('store has changed.')
+
+store.dispatch({
+  type: 'ADD_TODO',
+  todo: {
+    id: 0,
+    name: 'Learn Redux',
+    complete: false
+  }
 })
