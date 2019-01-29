@@ -1,5 +1,5 @@
 // Library Code
-function createStore() {
+function createStore(reducer) {
   // The store should have four parts:
   // 1. The State
   // 2. Get the state
@@ -18,7 +18,7 @@ function createStore() {
   }
 
   const dispatch = (action) => {
-    state = todods(state, action)
+    state = reducer(state, action)
     listeners.forEach((listener) => listener())
   }
 
@@ -37,7 +37,7 @@ function todods (state = [], action) {
   return state
 }
 
-const store = createStore()
+const store = createStore(todods)
 store.subscribe(() => {
   console.log('The new state is', store.getState())
 })
