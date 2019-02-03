@@ -203,6 +203,11 @@
       const li = document.createElement('li')
       const name = todo.name
       li.textContent = name
+      li.style.textDecoration = todo.complete ? 'line-through' : 'none'
+
+      li.addEventListener('click', () => {
+        store.dispatch(toggleTodoAction(todo.id))
+      })
       document.getElementById('todos').appendChild(li)
     }
 
