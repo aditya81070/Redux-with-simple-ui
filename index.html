@@ -199,10 +199,21 @@
     document.getElementById('goalBtn')
       .addEventListener('click', addGoal)
 
+    function createRemoveButton (onClick) {
+      const removeButton = document.createElement('button')
+      removeButton.innerHTML = 'X'
+      removeButton.addEventListener('click', onClick)
+      return removeButton
+    }
+
     function addTodoToDOM (todo) {
       const li = document.createElement('li')
-      const name = todo.name
-      li.textContent = name
+      const text = document.createTextNode(todo.name)
+      const removeButton = createRemoveButton(() => {
+        store.dispatch(removeTodoAction(todo.id))
+      })
+      li.append(text)
+      li.append(removeButton)
       li.style.textDecoration = todo.complete ? 'line-through' : 'none'
 
       li.addEventListener('click', () => {
