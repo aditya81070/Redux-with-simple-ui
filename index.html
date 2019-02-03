@@ -224,8 +224,12 @@
 
     function addGoalToDOM (goal) {
       const li = document.createElement('li')
-      const name = goal.name
-      li.textContent = name
+      const text = document.createTextNode(goal.name)
+      const removeButton = createRemoveButton(() => {
+        store.dispatch(removeGoalAction(goal.id))
+      })
+      li.append(text)
+      li.append(removeButton)
       document.getElementById('goals')
         .appendChild(li)
     }
