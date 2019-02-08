@@ -177,22 +177,33 @@
     class Todos extends React.Component {
       addItem = (e) => {
         e.preventDefault()
-        const name = this.input.value
-        this.input.value = ''
-
-        this.props.dispatch(addTodoAction({
-          name,
-          complete: false,
-          id: generateId()
-        }))
+        return API.saveTodo(this.input.value)
+          .then((todo) => {
+            this.props.dispatch(addTodoAction(todo))
+            this.input.value = ''
+          })
+          .catch(() => {
+            alert('there is an error')
+          })
       }
 
       removeItem = (todo) => {
         this.props.dispatch(removeTodoAction(todo.id))
+        return API.deleteTodo(todo)
+                .catch(() => {
+                  this.props.dispatch(addTodoAction(todo))
+                   alert('There is an error deleting item')
+              })
       }
 
       toggleItem = (todo) => {
         this.props.dispatch(toggleTodoAction(todo.id))
+
+        return API.saveTodoToggle (todo.id)
+          .catch(() => {
+            this.props.dispatch(toggleTodoAction(todo.id))
+            alert('error toggling todo')
+          })
       }
       render () {
         return (
@@ -223,17 +234,24 @@
     class Goals extends React.Component {
       addItem = (e) => {
         e.preventDefault()
-        const name = this.input.value
-        this.input.value = ''
-
-        this.props.dispatch(addGoalAction({
-          name,
-          id: generateId()
-        }))
+        return API.saveGoal(this.input.value)
+          .then((goal) => {
+            this.props.dispatch(addGoalAction(goal))
+            this.input.value = ''
+          })
+          .catch(() => {
+            alert('there is an error')
+          })
       }
 
       removeItem = (goal) => {
         this.props.dispatch(removeGoalAction(goal.id))
+
+        return API.deleteGoal(goal.id)
+          .catch(() => {
+            this.props.dispatch(addGoalAction(goal))
+            alert('Error deleting item')
+          })
       }
       render () {
         return (
