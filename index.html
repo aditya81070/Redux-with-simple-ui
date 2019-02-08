@@ -69,6 +69,17 @@
         goals
       }
     }
+
+    function handleDeleteTodo (todo) {
+      return (dispatch) => {
+        dispatch(removeTodoAction(todo.id))
+        return API.deleteTodo(todo)
+          .catch(() => {
+            dispatch(addTodoAction(todo))
+            alert('There is an error deleting item')
+          })
+      }
+    }
     function todos(state = [], action) {
       switch (action.type) {
         case ADD_TODO:
@@ -145,11 +156,18 @@
       return result
     }
 
+    const thunk = (store) => (next) => (action) => {
+      if (typeof action === 'function') {
+        return action(store.dispatch)
+      }
+      next(action)
+    }
+
     const store = Redux.createStore(Redux.combineReducers({
       todos,
       goals,
       loading
-    }), Redux.applyMiddleware(checker, logger))
+    }), Redux.applyMiddleware(thunk, checker, logger))
   </script>
 
   <script type="text/babel">
@@ -188,12 +206,7 @@
       }
 
       removeItem = (todo) => {
-        this.props.dispatch(removeTodoAction(todo.id))
-        return API.deleteTodo(todo)
-                .catch(() => {
-                  this.props.dispatch(addTodoAction(todo))
-                   alert('There is an error deleting item')
-              })
+        this.props.dispatch(handleDeleteTodo(todo))
       }
 
       toggleItem = (todo) => {
