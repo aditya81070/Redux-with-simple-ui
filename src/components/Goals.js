@@ -6,7 +6,7 @@ import {
 } from '../actions/goals'
 import List from './List'
 
-class Goals extends React {
+class Goals extends Component {
       addItem = (e) => {
         e.preventDefault()
         this.props.dispatch(handleAddGoal(

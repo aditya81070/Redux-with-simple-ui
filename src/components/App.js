@@ -4,7 +4,7 @@ import { handleInitialData } from '../actions/shared'
 import ConnectedTodos from './Todos'
 import ConnectedGoals from './Goals'
 
-class App extends React {
+class App extends Component {
   componentDidMount () {
     const { dispatch } = this.props
     dispatch(handleInitialData())
