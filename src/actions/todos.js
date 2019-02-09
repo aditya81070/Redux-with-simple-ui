@@ -34,6 +34,7 @@ export function handleAddTodo(name, cb) {
       })
       .catch(() => {
         alert('there is an error')
+        cb()
       })
   }
 }

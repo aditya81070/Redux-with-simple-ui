@@ -26,6 +26,7 @@ export function handleAddGoal(name, cb) {
       })
       .catch(() => {
         alert('there is an error')
+        cb()
       })
   }
 }
